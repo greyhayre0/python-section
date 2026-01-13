@@ -19,9 +19,9 @@ class Field:
         return self._get_value(instance.payload)
 
     def __set__(self, instance: 'Model', value: Any) -> None: # Для присвоения атрибута используем кастом функцию запись
-        self._set_value(instance.payload)
+        self._set_value(instance.payload, value)
 
-    def _get_value(self, payload: JSON, value: Any) -> Any: # Извлекатель
+    def _get_value(self, payload: JSON) -> Any: # Извлекатель
         parts = self.path.split('.')
         current = payload
         for part in parts:
@@ -35,7 +35,7 @@ class Field:
         parts = self.path.split('.')
         current = payload
         for part in parts[:-1]:
-            if parts not in current or not isinstance(current[part], dict):
+            if part not in current or not isinstance(current[part], dict):
                 current[part] = {}
             current = current[part]
         current[parts[-1]] = value
