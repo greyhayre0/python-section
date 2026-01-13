@@ -55,10 +55,10 @@ class Wallet:
         self.currenceies = {}
         self.currenceies[initial_mony.currency] = initial_mony
 
-    def __getitem__(self, currency): # Надо ли мне это
-        return self.currenceies.get(currency, Money(0, currency))
-    
-
+#    def __getitem__(self, currency): # Надо ли мне это
+#        return self.currenceies.get(currency, Money(0, currency))
+#    def __len__(self):
+#        return len(self.currenceies)
 
     def add(self, money: Money): # Сложение и на всякий создание добавляемого типа валюты
         if money.currency in self.currenceies:
@@ -83,6 +83,10 @@ class Wallet:
 
 wallet1 = Wallet(Money(100, rub))
 wallet2 = Wallet(Money(50, usd))
+wallet3 = Wallet(Money(50, usb))
 print(wallet2)
 print(wallet2.add(Money(50, usd)))
 print(wallet2.sub(Money(50, usd)))
+print(wallet2.sub(Money(50, usd)))
+#print(wallet2.sub(Money(50, usd)))
+#print(wallet2.sub(Money(50, rub)))
