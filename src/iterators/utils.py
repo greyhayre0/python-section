@@ -29,8 +29,43 @@ def request(query: Query) -> Page:
 
 
 class RetrieveRemoteData:
-    pass
+    '''Опросник сайта'''
+    def __init__(self):
+        pass
+
+    def iter(self):
+        def generator():
+            query = Query()
+            while True:
+                page = request(query)
+                for item in page.results:
+                    yield item
+                if page.next is None:
+                    break
+                query.page = page.next
+            return generator()
 
 
 class Fibo:
-    pass
+    '''Фибоначи'''
+    def __init__(self, n):
+        self.n = n
+        self.index = 0
+        self.a = 0
+        self.b = 1
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index >= self.n:
+            raise StopIteration
+        if self.index == 0:
+            result = 0
+        elif self.index == 1:
+            result = 1
+        else:
+            result = self.a + self.b
+            self.a, self.b = self.b, result
+        self.index += 1
+        return result
