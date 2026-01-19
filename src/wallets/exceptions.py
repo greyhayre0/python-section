@@ -1,8 +1,3 @@
-'''
-Исключения
-'''
-
-
 class NegativeValueException(Exception):
     '''при попытке получить отрицательную сумму'''
     pass

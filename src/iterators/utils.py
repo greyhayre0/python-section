@@ -30,12 +30,12 @@ def request(query: Query) -> Page:
 
 class RetrieveRemoteData:
     '''Опросник сайта'''
-    def __init__(self):
-        pass
+    def __init__(self, per_page):
+        self.per_page = per_page
 
-    def iter(self):
+    def __iter__(self):
         def generator():
-            query = Query()
+            query = Query(self.per_page)
             while True:
                 page = request(query)
                 for item in page.results:
@@ -43,7 +43,7 @@ class RetrieveRemoteData:
                 if page.next is None:
                     break
                 query.page = page.next
-            return generator()
+        return generator()
 
 
 class Fibo:

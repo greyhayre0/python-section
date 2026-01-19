@@ -1,13 +1,5 @@
-'''
-основное рабочее поле
-Деньги
-1. Неотрицательный баланс кощелька при создании
-- Пополнение
-- Снятие
-- Минус на кошельке неприемлим, даже при снятии
-'''
-from currency import rub, usd, Currency
-from exceptions import NegativeValueException, NotComparisonException
+from .currency import rub, usd, Currency
+from .exceptions import NegativeValueException, NotComparisonException
 
 
 class Money:
@@ -18,21 +10,21 @@ class Money:
         self.value = value
         self.currency = currency
 
-    def __eq__(self, other): # Сравнение если обьект не Mony и валюты не совпадают
+    def __eq__(self, other):
         if not isinstance(other, Money):
             return NotImplemented
         if self.currency != other.currency:
             raise NotComparisonException
         return self.value == other.value
 
-    def __add__(self, other): # Сложение и проверка на совпадение типа и валюты
+    def __add__(self, other):
         if not isinstance(other, Money):
             return NotImplemented
         if self.currency != other.currency:
             raise NotComparisonException
         return Money(self.value + other.value, self.currency)
 
-    def __sub__(self, other): # Вычитание и проверка на совпадение типа и валюты
+    def __sub__(self, other):
         if not isinstance(other, Money):
             return NotImplemented
         if self.currency != other.currency:
@@ -42,51 +34,49 @@ class Money:
             raise NegativeValueException
         return Money(result, self.currency)
 
-    def __hash__(self): # чтобы пихать в словарь
+    def __hash__(self):
         return hash((self.value, self.currency))
 
-    def __repr__(self): # Чисто по приколу посмотреть почитать
+    def __repr__(self):
         return f'{self.value} {self.currency}'
 
 
 class Wallet:
     '''Кошелек'''
     def __init__(self, initial_mony: Money):
-        self.currenceies = {}
-        self.currenceies[initial_mony.currency] = initial_mony
+        self.currencies = {}
+        self.currencies[initial_mony.currency] = initial_mony
 
-#    def __getitem__(self, currency): # Надо ли мне это
-#        return self.currenceies.get(currency, Money(0, currency))
-#    def __len__(self):
-#        return len(self.currenceies)
+    def __getitem__(self, currency):
+        return self.currencies.get(currency, Money(0, currency))
+    
+    def __len__(self):
+        return len(self.currencies)
+    
+    def __contains__(self, currency):
+        return currency in self.currencies
+    
+    def __delitem__(self, currency):
+        if currency in self.currencies:
+            del self.currencies[currency]
 
-    def add(self, money: Money): # Сложение и на всякий создание добавляемого типа валюты
-        if money.currency in self.currenceies:
-            curretnt = self.currenceies[money.currency]
-            self.currenceies[money.currency] = curretnt + money
+    def add(self, money: Money):
+        if money.currency in self.currencies:
+            curretnt = self.currencies[money.currency]
+            self.currencies[money.currency] = curretnt + money
         else:
-            self.currenceies[money.currency] = Money(money.value, money.currency)
+            self.currencies[money.currency] = Money(money.value, money.currency)
         return self
 
     def sub(self, money: Money):
-        if money.currency not in self.currenceies:
+        if money.currency not in self.currencies:
             curretnt = Money(0, money.currency)
         else:
-            curretnt = self.currenceies[money.currency]
+            curretnt = self.currencies[money.currency]
         new_money = curretnt - money
-        self.currenceies[money.currency] = new_money
+        self.currencies[money.currency] = new_money
         return self
 
-    def __repr__(self): # Чисто по приколу посмотреть почитать
-        return f'{self.currenceies}'
 
-
-wallet1 = Wallet(Money(100, rub))
-wallet2 = Wallet(Money(50, usd))
-#wallet3 = Wallet(Money(50, usb))
-print(wallet2)
-print(wallet2.add(Money(50, usd)))
-print(wallet2.sub(Money(50, usd)))
-print(wallet2.sub(Money(50, usd)))
-#print(wallet2.sub(Money(50, usd)))
-#print(wallet2.sub(Money(50, rub)))
+    def __repr__(self):
+        return f'{self.currencies}'

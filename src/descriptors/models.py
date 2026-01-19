@@ -29,7 +29,7 @@ class Field:
                 current = current[part]
             else:
                 return None
-            return current
+        return current
 
     def _set_value(self, payload: JSON, value: Any) -> None: # Ну по сути записывает данные
         parts = self.path.split('.')
