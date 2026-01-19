@@ -9,20 +9,27 @@ class Model:
 
 
 class Field:
-    '''Дескриптор данных'''
+    """Дескриптор данных"""
+
     def __init__(self, path: str):
         self.path = path
 
-    def __get__(self, instance: 'Model', owner) -> Any: # Либо через класс получаем дескриптор либо через экземпляр то вызов метода чтение
+    def __get__(
+        self, instance: "Model", owner
+    ) -> (
+        Any
+    ):  # Либо через класс получаем дескриптор либо через экземпляр то вызов метода чтение
         if instance is None:
             return self
         return self._get_value(instance.payload)
 
-    def __set__(self, instance: 'Model', value: Any) -> None: # Для присвоения атрибута используем кастом функцию запись
+    def __set__(
+        self, instance: "Model", value: Any
+    ) -> None:  # Для присвоения атрибута используем кастом функцию запись
         self._set_value(instance.payload, value)
 
-    def _get_value(self, payload: JSON) -> Any: # Извлекатель
-        parts = self.path.split('.')
+    def _get_value(self, payload: JSON) -> Any:  # Извлекатель
+        parts = self.path.split(".")
         current = payload
         for part in parts:
             if isinstance(current, dict) and part in current:
@@ -31,8 +38,10 @@ class Field:
                 return None
         return current
 
-    def _set_value(self, payload: JSON, value: Any) -> None: # Ну по сути записывает данные
-        parts = self.path.split('.')
+    def _set_value(
+        self, payload: JSON, value: Any
+    ) -> None:  # Ну по сути записывает данные
+        parts = self.path.split(".")
         current = payload
         for part in parts[:-1]:
             if part not in current or not isinstance(current[part], dict):

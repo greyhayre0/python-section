@@ -1,10 +1,11 @@
-from .currency import rub, usd, Currency
+from .currency import Currency, rub, usd
 from .exceptions import NegativeValueException, NotComparisonException
 
 
 class Money:
-    '''Деньги'''
-    def __init__(self, value: float, currency: 'Currency'):
+    """Деньги"""
+
+    def __init__(self, value: float, currency: "Currency"):
         if value < 0:
             raise NegativeValueException
         self.value = value
@@ -38,24 +39,25 @@ class Money:
         return hash((self.value, self.currency))
 
     def __repr__(self):
-        return f'{self.value} {self.currency}'
+        return f"{self.value} {self.currency}"
 
 
 class Wallet:
-    '''Кошелек'''
+    """Кошелек"""
+
     def __init__(self, initial_mony: Money):
         self.currencies = {}
         self.currencies[initial_mony.currency] = initial_mony
 
     def __getitem__(self, currency):
         return self.currencies.get(currency, Money(0, currency))
-    
+
     def __len__(self):
         return len(self.currencies)
-    
+
     def __contains__(self, currency):
         return currency in self.currencies
-    
+
     def __delitem__(self, currency):
         if currency in self.currencies:
             del self.currencies[currency]
@@ -77,6 +79,5 @@ class Wallet:
         self.currencies[money.currency] = new_money
         return self
 
-
     def __repr__(self):
-        return f'{self.currencies}'
+        return f"{self.currencies}"

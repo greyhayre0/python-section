@@ -1,5 +1,5 @@
-from abc import ABC, abstractmethod
 import enum
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Dict, Optional
 
@@ -22,14 +22,16 @@ class ParsedMessage:
 
 
 class MessageParsed(ABC):
-    '''Абстракция для всех'''
+    """Абстракция для всех"""
+
     @abstractmethod
     def parse(self, payload: str) -> ParsedMessage:
         pass
 
 
 class ParserFactory:
-    '''Фабрика'''
+    """Фабрика"""
+
     def __init__(self):
         self._parsers: Dict[MessageType, MessageParsed] = {}
 
@@ -48,26 +50,17 @@ class ParserFactory:
 
 class TelegramParser(MessageParsed):
     def parse(self, payload: str) -> ParsedMessage:
-        print('Telegramm')
+        print("Telegramm")
         return ParsedMessage()
 
 
 class MattermostParser(MessageParsed):
     def parse(self, payload: str) -> ParsedMessage:
-        print('Mattermost')
+        print("Mattermost")
         return ParsedMessage()
 
 
 class SlackParser(MessageParsed):
     def parse(self, payload: str) -> ParsedMessage:
-        print('Slack')
+        print("Slack")
         return ParsedMessage()
-
-
-factory = ParserFactory()
-factory.register(MessageType.TELEGRAM, TelegramParser())
-factory.register(MessageType.MATTERMOST, MattermostParser())
-factory.register(MessageType.SLACK, SlackParser())
-
-message = JsonMessage(MessageType.TELEGRAM, '{"Br":"Go SIng"}')
-result = factory.parse(message)

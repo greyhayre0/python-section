@@ -10,6 +10,7 @@ class TestFibo:
 
 class TestRetrieveRemoteData:
     def test(self):
-        reference = request(Query(per_page=100, page=1))  # 1, 2, 3, 4, 5, 6, 7, 8, 9
+        # 1, 2, 3, 4, 5, 6, 7, 8, 9
+        reference = request(Query(per_page=100, page=1))
         results = [obj for obj in RetrieveRemoteData(per_page=3)]
         assert results == list(reference.results)

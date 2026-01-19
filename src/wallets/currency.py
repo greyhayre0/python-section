@@ -1,20 +1,16 @@
-'''
-Валюта
-'''
-
-
 class Currency:
-    '''Представление Валют'''
+    """Представление Валют"""
+
     def __init__(self, code: str):
         self.code = code
 
-    def __eq__(self, other): # Можно сравнивать
+    def __eq__(self, other):
         return isinstance(other, Currency) and self.code == other.code
 
-    def __hash__(self): # Можно юзать в словарях
+    def __hash__(self):
         return hash(self.code)
 
-    def __repr__(self): # пищет кто он
+    def __repr__(self):
         return f"{self.code}"
 
 

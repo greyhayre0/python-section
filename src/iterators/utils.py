@@ -29,7 +29,8 @@ def request(query: Query) -> Page:
 
 
 class RetrieveRemoteData:
-    '''Опросник сайта'''
+    """Опросник сайта"""
+
     def __init__(self, per_page):
         self.per_page = per_page
 
@@ -43,11 +44,13 @@ class RetrieveRemoteData:
                 if page.next is None:
                     break
                 query.page = page.next
+
         return generator()
 
 
 class Fibo:
-    '''Фибоначи'''
+    """Фибоначи"""
+
     def __init__(self, n):
         self.n = n
         self.index = 0

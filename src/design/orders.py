@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Dict, Callable, Optional
+from typing import Callable, Dict, Optional
 
 
 @dataclass
@@ -33,7 +33,7 @@ class PercentDiscount(Discount):
         self.amount = amount
 
     def apply(self, order: Order) -> float:
-        return order.total()*(self.amount / 100)
+        return order.total() * (self.amount / 100)
 
 
 class LoyalDiscount(Discount):
@@ -48,9 +48,11 @@ class LoyalDiscount(Discount):
 
 class DiscountFactory:
     def __init__(self):
-        self._registry: Dict[str, Callable[float, Discount]] = {}
+        self._registry: Dict[str, Callable[float, Discount]] = {}  # type: ignore
 
-    def register(self, discount_type: str, constructor: Callable[[float], Discount]) -> None:
+    def register(
+        self, discount_type: str, constructor: Callable[[float], Discount]
+    ) -> None:
         self._registry[discount_type] = constructor
 
     def create(self, discount_type: str, value: float) -> Optional[Discount]:
@@ -58,9 +60,3 @@ class DiscountFactory:
         if not constructor:
             return None
         return constructor(value)
-
-
-discount_fatory = DiscountFactory()
-discount_fatory.register('fixed', lambda v: FixedDiscount(amount=v))
-discount_fatory.register('Percent', lambda v: PercentDiscount(amount=v))
-discount_fatory.register('Loyal', lambda v: LoyalDiscount(amount=v))
