@@ -6,7 +6,7 @@
 - Снятие
 - Минус на кошельке неприемлим, даже при снятии
 '''
-from currency import rub, usd
+from currency import rub, usd, Currency
 from exceptions import NegativeValueException, NotComparisonException
 
 
@@ -83,7 +83,7 @@ class Wallet:
 
 wallet1 = Wallet(Money(100, rub))
 wallet2 = Wallet(Money(50, usd))
-wallet3 = Wallet(Money(50, usb))
+#wallet3 = Wallet(Money(50, usb))
 print(wallet2)
 print(wallet2.add(Money(50, usd)))
 print(wallet2.sub(Money(50, usd)))
